@@ -87,8 +87,9 @@ Ridge Regression, Naive Persistence, Seasonal Persistence, Random Forest, Extra 
 
 Each was evaluated using MAE, RMSE, and R².
 
-**LightGBM came out on top** and was selected as the main forecasting model. The other trained models were kept around for comparison rather than thrown away.
+## Model Selection
 
+Based on the evaluation of all trained models, a weighted ensemble blending approach was selected as the final forecasting model. The ensemble combines the predictions of the Tuned LightGBM, Tuned XGBoost, and Extra Trees models.
 ---
 
 ## Why Feast for the Feature Store
