@@ -1,0 +1,9 @@
+{
+  "model": "Weighted Ensemble (TEST)",
+  "MAE": 0.403,
+  "RMSE": 0.803,
+  "R2": 0.9966,
+  "MedAE": 0.258,
+  "MAPE_%": 0.49,
+  "Explained_Variance": 0.9966
+}

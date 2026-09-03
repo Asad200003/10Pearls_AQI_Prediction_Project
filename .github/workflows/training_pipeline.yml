@@ -1,0 +1,111 @@
+name: Daily Training Pipeline
+
+# ============================================================================
+# Same local-Feast-vs-remote-CI reasoning as .github/workflows/feature_pipeline.yml -
+# see that file's header comment for the full explanation. In short: this workflow
+# retrains against the copy of feature_store/data/ and models/ checked into THIS repo
+# (a fresh GitHub-hosted runner every time - it cannot touch your personal computer),
+# then commits the newly trained model + refreshed Feast offline/online store back to
+# the repo so `git pull` on your local machine picks up the update.
+# ============================================================================
+
+"on":
+  schedule:
+    # Once a day at 02:00 UTC. GitHub Actions cron is always UTC. Karachi
+    # (Asia/Karachi) is UTC+5 year-round (no daylight saving in Pakistan), so
+    # 02:00 UTC == 07:00 PKT - early morning in Karachi, after a full day+night of
+    # hourly feature-pipeline runs have accumulated fresh data to train on, and
+    # before most people would be using the dashboard.
+    - cron: "0 2 * * *"
+  workflow_dispatch: {}   # manual "Run workflow" button in the GitHub Actions UI
+
+permissions:
+  contents: write   # required so the final step can commit the retrained model back
+
+concurrency:
+  group: training-pipeline
+  cancel-in-progress: false   # never cancel a run mid-training/mid-commit
+
+jobs:
+  run-training-pipeline:
+    runs-on: ubuntu-latest
+    # This executes the FULL existing notebook (all model families, Optuna tuning,
+    # LSTM, ensembling, walk-forward backtest) via papermill - see scripts/
+    # train_pipeline.py's module docstring for why it's run as-is rather than
+    # reimplemented. FAST_MODE (set inside the notebook's own config cell) keeps this
+    # bounded; 350 minutes leaves headroom under GitHub's 360-minute hard job limit.
+    timeout-minutes: 350
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Speeds up repeated daily runs: the notebook's fetch_weather_data()/
+      # fetch_air_quality_data() already cache downloaded CSVs under data/raw/ and
+      # skip re-downloading when the cache file exists (unless FORCE_DOWNLOAD=True).
+      # Restoring that cache directory here means only the last few days of the
+      # historical window need a fresh Open-Meteo request on typical runs, instead of
+      # the entire multi-year history every single day. Cache key is tied to the
+      # notebook file itself so a START_DATE/END_DATE change invalidates it correctly.
+      - name: Restore cached raw data
+        uses: actions/cache@v4
+        with:
+          path: data/raw
+          key: data-raw-${{ hashFiles('notebooks/Karachi_AQI_Forecasting.ipynb') }}
+          restore-keys: |
+            data-raw-
+
+      - name: Run daily training pipeline
+        run: python scripts/train_pipeline.py
+
+      - name: Commit retrained model + refreshed Feast state back to the repository
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(training-pipeline): daily model retrain + Feast refresh [skip ci]"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          file_pattern: >-
+            models/*
+            feature_store/data/karachi_features.parquet
+            feature_store/data/online_store.db
+            feature_store/data/registry.db
+            feature_store/feature_views.py
+            feature_store/feature_service.py
+            data/processed/*
+            outputs/metrics/*
+            outputs/figures/*
+            outputs/predictions/*.csv
+
+      # The fully executed notebook (with every plot/output embedded) can be large and
+      # isn't essential to keep in git history forever - it's uploaded as a downloadable
+      # workflow artifact instead of committed, so it's still available for inspection
+      # (e.g. "did training actually run, what did the output look like") without
+      # bloating the repository on every single daily run.
+      - name: Upload executed notebook as a workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: executed-training-notebook-${{ github.run_id }}
+          path: outputs/predictions/Karachi_AQI_Forecasting_executed.ipynb
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload training run log as a workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: training-pipeline-run-log-${{ github.run_id }}
+          path: outputs/metrics/last_train_pipeline_run.json
+          if-no-files-found: ignore
+          retention-days: 30

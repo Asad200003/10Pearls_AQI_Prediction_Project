@@ -1,0 +1,542 @@
+
+–
+Ø
+location_idxFixed location identifier for the Karachi AQI forecasting site (24.8607 N, 67.0011 E). Constant single value: 'karachi'."location_idJkarachi_aqi_forecasting
+§í«‘ò¢∑‡°Ñﬂ‘ ∫¶
+N
+.
+__dummy"
+__dummy_idJkarachi_aqi_forecasting
+úÑ«‘ê¶Âæ°Ñﬂ‘Ëèîß1"$2330f7cb-8065-4327-95db-70a049c439f9*•Ñﬂ‘®Ïòœ2õ$
+≈!
+karachi_aqi_featureskarachi_aqi_forecastinglocation_id"
+temperature_2m"
+relative_humidity_2m"
+dew_point_2m"
+apparent_temperature"
+precipitation"
+rain"
+cloud_cover"
+surface_pressure"
+pressure_msl"
+wind_speed_10m"
+wind_direction_10m"
+wind_gusts_10m"
+shortwave_radiation"
+direct_radiation"
+diffuse_radiation"
+pm10"	
+pm2_5"
+carbon_monoxide"
+nitrogen_dioxide"
+sulphur_dioxide"	
+ozone"
+ammonia"
+us_aqi_pm2_5"
+us_aqi_pm10"
+
+us_aqi_no2"
+	us_aqi_co"
+
+us_aqi_so2"
+us_aqi_ozone"
+us_aqi_lag_1"
+us_aqi_lag_2"
+us_aqi_lag_3"
+us_aqi_lag_6"
+us_aqi_lag_12"
+us_aqi_lag_24"
+us_aqi_lag_48"
+us_aqi_lag_72"
+us_aqi_lag_168"
+us_aqi_rolling_mean_3"
+us_aqi_rolling_mean_6"
+us_aqi_rolling_mean_12"
+us_aqi_rolling_std_12"
+us_aqi_rolling_min_12"
+us_aqi_rolling_max_12"
+us_aqi_rolling_mean_24"
+us_aqi_rolling_std_24"
+us_aqi_rolling_min_24"
+us_aqi_rolling_max_24"
+us_aqi_rolling_mean_48"
+us_aqi_rolling_std_48"
+us_aqi_rolling_min_48"
+us_aqi_rolling_max_48"
+pm2_5_lag_1"
+pm2_5_lag_3"
+pm2_5_lag_6"
+pm2_5_lag_12"
+pm2_5_lag_24"
+pm2_5_lag_48"
+pm2_5_lag_72"
+pm2_5_rolling_mean_3"
+pm2_5_rolling_mean_6"
+pm2_5_rolling_mean_24"
+pm2_5_rolling_std_24"
+pm2_5_rolling_min_24"
+pm2_5_rolling_max_24"
+
+pm10_lag_1"
+
+pm10_lag_3"
+
+pm10_lag_6"
+pm10_lag_12"
+pm10_lag_24"
+pm10_lag_48"
+pm10_lag_72"
+pm10_rolling_mean_3"
+pm10_rolling_mean_6"
+pm10_rolling_mean_24"
+pm10_rolling_std_24"
+pm10_rolling_min_24"
+pm10_rolling_max_24"
+carbon_monoxide_lag_1"
+carbon_monoxide_lag_3"
+carbon_monoxide_lag_6"
+carbon_monoxide_lag_12"
+carbon_monoxide_lag_24"
+carbon_monoxide_lag_48"
+carbon_monoxide_lag_72""
+carbon_monoxide_rolling_mean_3""
+carbon_monoxide_rolling_mean_6"#
+carbon_monoxide_rolling_mean_24""
+carbon_monoxide_rolling_std_24""
+carbon_monoxide_rolling_min_24""
+carbon_monoxide_rolling_max_24"
+nitrogen_dioxide_lag_1"
+nitrogen_dioxide_lag_3"
+nitrogen_dioxide_lag_6"
+nitrogen_dioxide_lag_12"
+nitrogen_dioxide_lag_24"
+nitrogen_dioxide_lag_48"
+nitrogen_dioxide_lag_72"#
+nitrogen_dioxide_rolling_mean_3"#
+nitrogen_dioxide_rolling_mean_6"$
+ nitrogen_dioxide_rolling_mean_24"#
+nitrogen_dioxide_rolling_std_24"#
+nitrogen_dioxide_rolling_min_24"#
+nitrogen_dioxide_rolling_max_24"
+sulphur_dioxide_lag_1"
+sulphur_dioxide_lag_3"
+sulphur_dioxide_lag_6"
+sulphur_dioxide_lag_12"
+sulphur_dioxide_lag_24"
+sulphur_dioxide_lag_48"
+sulphur_dioxide_lag_72""
+sulphur_dioxide_rolling_mean_3""
+sulphur_dioxide_rolling_mean_6"#
+sulphur_dioxide_rolling_mean_24""
+sulphur_dioxide_rolling_std_24""
+sulphur_dioxide_rolling_min_24""
+sulphur_dioxide_rolling_max_24"
+ozone_lag_1"
+ozone_lag_3"
+ozone_lag_6"
+ozone_lag_12"
+ozone_lag_24"
+ozone_lag_48"
+ozone_lag_72"
+ozone_rolling_mean_3"
+ozone_rolling_mean_6"
+ozone_rolling_mean_24"
+ozone_rolling_std_24"
+ozone_rolling_min_24"
+ozone_rolling_max_24"
+hour"
+day"
+day_of_week"
+day_of_month"	
+month"
+quarter"
+week_of_year"
+day_of_year"
+
+is_weekend"
+sin_hour"
+cos_hour"
+sin_day_of_week"
+cos_day_of_week"
+	sin_month"
+	cos_month"
+temperature_2m_change_1h"
+temperature_2m_change_3h""
+relative_humidity_2m_change_1h""
+relative_humidity_2m_change_3h"
+surface_pressure_change_1h"
+surface_pressure_change_3h"
+wind_speed_10m_change_1h"
+wind_speed_10m_change_3h"
+temp_humidity_interaction"
+wind_dir_sin"
+wind_dir_cos""
+temperature_2m_rolling_mean_24"(
+$relative_humidity_2m_rolling_mean_24""
+wind_speed_10m_rolling_mean_24"
+low_dispersion_index2Ä∆
+:ûevent_timestamp*created_timestampZàÖc:/Users/Asad/Desktop/Karachi AQI Project/karachi-aqi-forecasting/karachi-aqi-forecasting/feature_store/data/karachi_features.parquetä1feast.infra.offline_stores.file_source.FileSource¢karachi_features_sourceí°Ñﬂ‘∞Ö©Á"°Ñﬂ‘Äßêó@RNEngineered hourly weather/pollutant/time features for Karachi AQI forecasting.b
+location_idílatest–
+§í«‘∏©»›•Ñﬂ‘»ÇüŒ
+Ä·‰òå‰”
+å‰”¿ÙÃ‘
+å‰”¿ÙÃ‘
+å‰”¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+¿ÙÃ‘¿ÙÃ‘
+Ä·‰òå‰”
+Ä·‰òå‰”0:≈!
+§!
+karachi_aqi_servicekarachi_aqi_forecasting¨ 
+karachi_aqi_features
+temperature_2m
+relative_humidity_2m
+dew_point_2m
+apparent_temperature
+precipitation
+rain
+cloud_cover
+surface_pressure
+pressure_msl
+wind_speed_10m
+wind_direction_10m
+wind_gusts_10m
+shortwave_radiation
+direct_radiation
+diffuse_radiation
+pm10	
+pm2_5
+carbon_monoxide
+nitrogen_dioxide
+sulphur_dioxide	
+ozone
+ammonia
+us_aqi_pm2_5
+us_aqi_pm10
+
+us_aqi_no2
+	us_aqi_co
+
+us_aqi_so2
+us_aqi_ozone
+us_aqi_lag_1
+us_aqi_lag_2
+us_aqi_lag_3
+us_aqi_lag_6
+us_aqi_lag_12
+us_aqi_lag_24
+us_aqi_lag_48
+us_aqi_lag_72
+us_aqi_lag_168
+us_aqi_rolling_mean_3
+us_aqi_rolling_mean_6
+us_aqi_rolling_mean_12
+us_aqi_rolling_std_12
+us_aqi_rolling_min_12
+us_aqi_rolling_max_12
+us_aqi_rolling_mean_24
+us_aqi_rolling_std_24
+us_aqi_rolling_min_24
+us_aqi_rolling_max_24
+us_aqi_rolling_mean_48
+us_aqi_rolling_std_48
+us_aqi_rolling_min_48
+us_aqi_rolling_max_48
+pm2_5_lag_1
+pm2_5_lag_3
+pm2_5_lag_6
+pm2_5_lag_12
+pm2_5_lag_24
+pm2_5_lag_48
+pm2_5_lag_72
+pm2_5_rolling_mean_3
+pm2_5_rolling_mean_6
+pm2_5_rolling_mean_24
+pm2_5_rolling_std_24
+pm2_5_rolling_min_24
+pm2_5_rolling_max_24
+
+pm10_lag_1
+
+pm10_lag_3
+
+pm10_lag_6
+pm10_lag_12
+pm10_lag_24
+pm10_lag_48
+pm10_lag_72
+pm10_rolling_mean_3
+pm10_rolling_mean_6
+pm10_rolling_mean_24
+pm10_rolling_std_24
+pm10_rolling_min_24
+pm10_rolling_max_24
+carbon_monoxide_lag_1
+carbon_monoxide_lag_3
+carbon_monoxide_lag_6
+carbon_monoxide_lag_12
+carbon_monoxide_lag_24
+carbon_monoxide_lag_48
+carbon_monoxide_lag_72"
+carbon_monoxide_rolling_mean_3"
+carbon_monoxide_rolling_mean_6#
+carbon_monoxide_rolling_mean_24"
+carbon_monoxide_rolling_std_24"
+carbon_monoxide_rolling_min_24"
+carbon_monoxide_rolling_max_24
+nitrogen_dioxide_lag_1
+nitrogen_dioxide_lag_3
+nitrogen_dioxide_lag_6
+nitrogen_dioxide_lag_12
+nitrogen_dioxide_lag_24
+nitrogen_dioxide_lag_48
+nitrogen_dioxide_lag_72#
+nitrogen_dioxide_rolling_mean_3#
+nitrogen_dioxide_rolling_mean_6$
+ nitrogen_dioxide_rolling_mean_24#
+nitrogen_dioxide_rolling_std_24#
+nitrogen_dioxide_rolling_min_24#
+nitrogen_dioxide_rolling_max_24
+sulphur_dioxide_lag_1
+sulphur_dioxide_lag_3
+sulphur_dioxide_lag_6
+sulphur_dioxide_lag_12
+sulphur_dioxide_lag_24
+sulphur_dioxide_lag_48
+sulphur_dioxide_lag_72"
+sulphur_dioxide_rolling_mean_3"
+sulphur_dioxide_rolling_mean_6#
+sulphur_dioxide_rolling_mean_24"
+sulphur_dioxide_rolling_std_24"
+sulphur_dioxide_rolling_min_24"
+sulphur_dioxide_rolling_max_24
+ozone_lag_1
+ozone_lag_3
+ozone_lag_6
+ozone_lag_12
+ozone_lag_24
+ozone_lag_48
+ozone_lag_72
+ozone_rolling_mean_3
+ozone_rolling_mean_6
+ozone_rolling_mean_24
+ozone_rolling_std_24
+ozone_rolling_min_24
+ozone_rolling_max_24
+hour
+day
+day_of_week
+day_of_month	
+month
+quarter
+week_of_year
+day_of_year
+
+is_weekend
+sin_hour
+cos_hour
+sin_day_of_week
+cos_day_of_week
+	sin_month
+	cos_month
+temperature_2m_change_1h
+temperature_2m_change_3h"
+relative_humidity_2m_change_1h"
+relative_humidity_2m_change_3h
+surface_pressure_change_1h
+surface_pressure_change_3h
+wind_speed_10m_change_1h
+wind_speed_10m_change_3h
+temp_humidity_interaction
+wind_dir_sin
+wind_dir_cos"
+temperature_2m_rolling_mean_24(
+$relative_humidity_2m_rolling_mean_24"
+wind_speed_10m_rolling_mean_24
+low_dispersion_index*created_timestamp:created_timestampBÍevent_timestamp*created_timestampZàÖc:/Users/Asad/Desktop/Karachi AQI Project/karachi-aqi-forecasting/karachi-aqi-forecasting/feature_store/data/karachi_features.parquet¢karachi_features_sourceí°Ñﬂ‘∞Ö©Á"°Ñﬂ‘ÄßêóZfeatureView*EFeature set consumed by the production Karachi AQI forecasting model.
+§í«‘‡”Ú‡°Ñﬂ‘‡ê⁄ßb∏event_timestamp*created_timestampZàÖc:/Users/Asad/Desktop/Karachi AQI Project/karachi-aqi-forecasting/karachi-aqi-forecasting/feature_store/data/karachi_features.parquetä1feast.infra.offline_stores.file_source.FileSource¢karachi_features_source™karachi_aqi_forecastingí§í«‘ò√ÂÕ"ÿÒ€‘¿®çâz?
+karachi_aqi_forecasting$60f819bb-41c3-45e7-a20f-748efe9c4073ä9
+
+karachi_aqi_forecasting
+§í«‘®’“⁄§í«‘®’“⁄íÛ!
+!
+karachi_aqi_featureskarachi_aqi_forecasting"feature_view*¸ 
+€ 
+karachi_aqi_featureskarachi_aqi_forecastinglocation_id"
+temperature_2m"
+relative_humidity_2m"
+dew_point_2m"
+apparent_temperature"
+precipitation"
+rain"
+cloud_cover"
+surface_pressure"
+pressure_msl"
+wind_speed_10m"
+wind_direction_10m"
+wind_gusts_10m"
+shortwave_radiation"
+direct_radiation"
+diffuse_radiation"
+pm10"	
+pm2_5"
+carbon_monoxide"
+nitrogen_dioxide"
+sulphur_dioxide"	
+ozone"
+ammonia"
+us_aqi_pm2_5"
+us_aqi_pm10"
+
+us_aqi_no2"
+	us_aqi_co"
+
+us_aqi_so2"
+us_aqi_ozone"
+us_aqi_lag_1"
+us_aqi_lag_2"
+us_aqi_lag_3"
+us_aqi_lag_6"
+us_aqi_lag_12"
+us_aqi_lag_24"
+us_aqi_lag_48"
+us_aqi_lag_72"
+us_aqi_lag_168"
+us_aqi_rolling_mean_3"
+us_aqi_rolling_mean_6"
+us_aqi_rolling_mean_12"
+us_aqi_rolling_std_12"
+us_aqi_rolling_min_12"
+us_aqi_rolling_max_12"
+us_aqi_rolling_mean_24"
+us_aqi_rolling_std_24"
+us_aqi_rolling_min_24"
+us_aqi_rolling_max_24"
+us_aqi_rolling_mean_48"
+us_aqi_rolling_std_48"
+us_aqi_rolling_min_48"
+us_aqi_rolling_max_48"
+pm2_5_lag_1"
+pm2_5_lag_3"
+pm2_5_lag_6"
+pm2_5_lag_12"
+pm2_5_lag_24"
+pm2_5_lag_48"
+pm2_5_lag_72"
+pm2_5_rolling_mean_3"
+pm2_5_rolling_mean_6"
+pm2_5_rolling_mean_24"
+pm2_5_rolling_std_24"
+pm2_5_rolling_min_24"
+pm2_5_rolling_max_24"
+
+pm10_lag_1"
+
+pm10_lag_3"
+
+pm10_lag_6"
+pm10_lag_12"
+pm10_lag_24"
+pm10_lag_48"
+pm10_lag_72"
+pm10_rolling_mean_3"
+pm10_rolling_mean_6"
+pm10_rolling_mean_24"
+pm10_rolling_std_24"
+pm10_rolling_min_24"
+pm10_rolling_max_24"
+carbon_monoxide_lag_1"
+carbon_monoxide_lag_3"
+carbon_monoxide_lag_6"
+carbon_monoxide_lag_12"
+carbon_monoxide_lag_24"
+carbon_monoxide_lag_48"
+carbon_monoxide_lag_72""
+carbon_monoxide_rolling_mean_3""
+carbon_monoxide_rolling_mean_6"#
+carbon_monoxide_rolling_mean_24""
+carbon_monoxide_rolling_std_24""
+carbon_monoxide_rolling_min_24""
+carbon_monoxide_rolling_max_24"
+nitrogen_dioxide_lag_1"
+nitrogen_dioxide_lag_3"
+nitrogen_dioxide_lag_6"
+nitrogen_dioxide_lag_12"
+nitrogen_dioxide_lag_24"
+nitrogen_dioxide_lag_48"
+nitrogen_dioxide_lag_72"#
+nitrogen_dioxide_rolling_mean_3"#
+nitrogen_dioxide_rolling_mean_6"$
+ nitrogen_dioxide_rolling_mean_24"#
+nitrogen_dioxide_rolling_std_24"#
+nitrogen_dioxide_rolling_min_24"#
+nitrogen_dioxide_rolling_max_24"
+sulphur_dioxide_lag_1"
+sulphur_dioxide_lag_3"
+sulphur_dioxide_lag_6"
+sulphur_dioxide_lag_12"
+sulphur_dioxide_lag_24"
+sulphur_dioxide_lag_48"
+sulphur_dioxide_lag_72""
+sulphur_dioxide_rolling_mean_3""
+sulphur_dioxide_rolling_mean_6"#
+sulphur_dioxide_rolling_mean_24""
+sulphur_dioxide_rolling_std_24""
+sulphur_dioxide_rolling_min_24""
+sulphur_dioxide_rolling_max_24"
+ozone_lag_1"
+ozone_lag_3"
+ozone_lag_6"
+ozone_lag_12"
+ozone_lag_24"
+ozone_lag_48"
+ozone_lag_72"
+ozone_rolling_mean_3"
+ozone_rolling_mean_6"
+ozone_rolling_mean_24"
+ozone_rolling_std_24"
+ozone_rolling_min_24"
+ozone_rolling_max_24"
+hour"
+day"
+day_of_week"
+day_of_month"	
+month"
+quarter"
+week_of_year"
+day_of_year"
+
+is_weekend"
+sin_hour"
+cos_hour"
+sin_day_of_week"
+cos_day_of_week"
+	sin_month"
+	cos_month"
+temperature_2m_change_1h"
+temperature_2m_change_3h""
+relative_humidity_2m_change_1h""
+relative_humidity_2m_change_3h"
+surface_pressure_change_1h"
+surface_pressure_change_3h"
+wind_speed_10m_change_1h"
+wind_speed_10m_change_3h"
+temp_humidity_interaction"
+wind_dir_sin"
+wind_dir_cos""
+temperature_2m_rolling_mean_24"(
+$relative_humidity_2m_rolling_mean_24""
+wind_speed_10m_rolling_mean_24"
+low_dispersion_index2Ä∆
+:¥event_timestamp*created_timestampZdata/karachi_features.parquetä1feast.infra.offline_stores.file_source.FileSource¢karachi_features_sourceí§í«‘ò√ÂÕ"§í«‘Ä≈¿⁄@RNEngineered hourly weather/pollutant/time features for Karachi AQI forecasting.b
+location_idílatest
+§í«‘∏©»›§í«‘∏©»›2§í«‘ò¢∑‡B$fbd77a8d-a7e9-4676-bcdc-5f77a4ef9405

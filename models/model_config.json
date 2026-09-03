@@ -1,0 +1,7 @@
+{
+  "final_model_name": "Weighted Ensemble",
+  "aqi_standard": "US EPA AQI (0-500 scale)",
+  "forecast_hours": 72,
+  "latitude": 24.8607,
+  "longitude": 67.0011
+}

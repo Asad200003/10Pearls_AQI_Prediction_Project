@@ -1,0 +1,108 @@
+name: Hourly Feature Pipeline
+
+# ============================================================================
+# WHY THIS WORKFLOW COMMITS FILES BACK TO THE REPO (read this before editing)
+# ============================================================================
+# This project's Feast setup is LOCAL: the offline store is a Parquet file, the
+# online store is a SQLite file, both under feature_store/data/. Those files live on
+# whatever machine runs Feast - they are not a hosted database GitHub Actions can
+# reach into on your personal Windows computer. A GitHub-hosted runner is a fresh,
+# temporary VM for every run; it cannot write to your laptop's filesystem, full stop.
+#
+# So this workflow does the only honest thing available without introducing cloud
+# infrastructure (which the internship requirements explicitly rule out): it runs the
+# feature pipeline against the copy of feature_store/data/ that's checked into THIS
+# GIT REPOSITORY, then commits the updated Parquet/SQLite files back to the repo. Your
+# local machine picks up the fresh feature values the next time you `git pull` -
+# git becomes the sync mechanism, the same way it already syncs your code. This is
+# what the project README calls out under "Local-development limitations": the
+# refresh is real and automatic on GitHub's side every hour; getting it onto your
+# local dashboard still requires a `git pull` (or see the README for a scripted
+# alternative). There is no way to make that last hop fully automatic without either
+# a hosted Feast backend or an agent running continuously on your own machine - and
+# the internship requirements explicitly say not to introduce one just for this.
+# ============================================================================
+
+"on":
+  schedule:
+    # Every hour, on the hour, UTC. GitHub Actions cron is ALWAYS UTC - there is no
+    # timezone field. Karachi (Asia/Karachi) is UTC+5 year-round (Pakistan does not
+    # observe daylight saving time), so "0 * * * *" fires at :00 UTC == :00+5 PKT,
+    # e.g. 09:00 UTC == 14:00 PKT. Since this runs every hour anyway, the UTC/PKT
+    # offset only matters for reading the run timestamps in the Actions log / in
+    # feature_store/data/last_feature_pipeline_run.json - add 5 hours to convert
+    # UTC -> PKT.
+    - cron: "0 * * * *"
+  workflow_dispatch: {}   # manual "Run workflow" button in the GitHub Actions UI
+
+permissions:
+  contents: write   # required so the final step can commit the refreshed Feast files back
+
+concurrency:
+  group: feature-pipeline
+  cancel-in-progress: false   # never cancel a run that might be mid-commit to Feast's online store
+
+jobs:
+  run-feature-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20   # this pipeline only fetches ~10 days of recent data + one Feast
+                           # materialize-incremental call - should finish in well under a minute
+                           # normally; 20 minutes is a generous ceiling for a slow Open-Meteo response.
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run hourly feature pipeline
+        id: feature_pipeline
+        run: |
+          set +e
+          python scripts/feature_pipeline.py
+          ec=$?
+          set -e
+          echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
+          if [ "$ec" -eq 0 ]; then
+            echo "::notice::Feature pipeline succeeded - Feast online store updated."
+          elif [ "$ec" -eq 2 ]; then
+            # Expected bootstrap state: Feast hasn't been applied yet in this checkout
+            # (the training pipeline generates feature_store/feature_views.py and
+            # feature_service.py - it hasn't run yet, or its output wasn't committed).
+            # Not a failure - just nothing to do this hour.
+            echo "::warning::Feast is not yet applied in this checkout (exit code 2). Run the training pipeline at least once first. Skipping commit."
+          else
+            echo "::error::Feature pipeline failed with exit code $ec"
+            exit 1
+          fi
+
+      - name: Commit refreshed Feast state back to the repository
+        if: steps.feature_pipeline.outputs.exit_code == '0'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(feature-pipeline): hourly Feast online store refresh [skip ci]"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          file_pattern: >-
+            feature_store/data/karachi_features.parquet
+            feature_store/data/online_store.db
+            feature_store/data/registry.db
+            feature_store/data/last_feature_pipeline_run.json
+
+      - name: Upload run log as a workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: feature-pipeline-run-log-${{ github.run_id }}
+          path: feature_store/data/last_feature_pipeline_run.json
+          if-no-files-found: ignore
+          retention-days: 14

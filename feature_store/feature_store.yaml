@@ -1,0 +1,26 @@
+project: karachi_aqi_forecasting
+# Local, file-based registry - no cloud/DB required.
+registry: data/registry.db
+# "local" provider = local online store (SQLite below). No Docker, no AWS/GCP/Azure,
+# no Hopsworks, no Vertex AI - runs entirely on this machine.
+provider: local
+offline_store:
+    # IMPORTANT: explicitly "duckdb", not the provider's default "file" offline store.
+    # The plain "file" offline store's point-in-time join does a pandas merge on the
+    # entity join key FIRST and filters by event_timestamp SECOND. With a single
+    # constant entity value (our location_id="karachi" is the same on every row, since
+    # this is a single-location project), "merge on join key" matches every entity_df
+    # row against every offline-source row before the timestamp filter ever runs -
+    # an O(n*m) cross product that OOMs on a full multi-year hourly dataset (tens of
+    # thousands of rows squared). DuckDB's offline store instead compiles the
+    # point-in-time join into a single SQL ASOF-style query that DuckDB executes
+    # out-of-core/streaming, without materializing that cross product - the same
+    # local, no-cloud, no-Docker setup, just a different (and correct-at-this-scale)
+    # join engine. Requires `pip install duckdb` (already in requirements.txt).
+    type: duckdb
+online_store:
+    type: sqlite
+    path: data/online_store.db
+entity_key_serialization_version: 3
+auth:
+    type: no_auth

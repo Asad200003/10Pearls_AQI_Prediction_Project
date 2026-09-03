@@ -1,0 +1,16 @@
+{
+  "duplicate_timestamps": 0,
+  "missing_by_column": {
+    "ammonia": 100.0,
+    "us_aqi_ozone": 0.02
+  },
+  "missing_hours_count": 0,
+  "expected_hours": 34608,
+  "actual_hours": 34608,
+  "impossible_values": {
+    "humidity_out_of_range": 0,
+    "negative_pm25": 0,
+    "negative_pm10": 0,
+    "aqi_out_of_range": 0
+  }
+}
