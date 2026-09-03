@@ -1,405 +1,168 @@
-# Karachi AQI Forecasting Internship Project
+# Karachi AQI Forecasting
+
+An end-to-end machine learning project that predicts Karachi's Air Quality Index (AQI) for the next 3 days, hour by hour.
+
+Built during my internship, this project takes historical weather and air-quality data, runs it through a full ML pipeline, and outputs a 72-hour AQI forecast on a live dashboard — all automated with CI/CD.
 
 ---
 
-## 1. Project Overview
+## What it does
 
-**Karachi AQI Forecasting System is an AI-powered system that forecasts Karachi's ****Air Quality Index (AQI) for the next 3 days, hour by hour**.
+Karachi's air quality changes fast, and most people only find out it's bad *after* they're already outside in it. This project tries to fix that by forecasting AQI a full three days ahead, updated hour by hour, so the numbers are actually useful for planning.
 
-The system uses historical air-quality and weather data to train Machine Learning models. It then uses the latest available data to predict AQI for the next **72 hours**.
-
-### Main Goal
-
-The main goal of this project is to provide an easy way to understand the expected air quality in Karachi for the next three days.
-
-### Key Features
-
-* 72-hour AQI forecasting
-* Hour-by-hour predictions
-* Historical AQI analysis
-* Weather and air-quality data collection
-* Feature engineering
-* Multiple Machine Learning models
-* Feast Feature Store
-* Automated CI/CD pipelines
-* Interactive Streamlit dashboard
-* Model training and feature pipelines
+**Highlights:**
+- 72-hour AQI forecast, broken down hour by hour
+- Historical AQI trend analysis
+- Automated data collection and feature engineering
+- A proper Feature Store (Feast) instead of ad-hoc CSVs
+- Several ML models trained and compared, with the best one picked automatically
+- CI/CD pipelines that keep data, features, and models fresh without manual work
+- A clean, interactive Streamlit dashboard
 
 ---
 
-## 2. Project Workflow
+## How it all fits together
 
-The complete system follows this workflow:
-
-```text
-Data Collection
-      ↓
-Data Cleaning
-      ↓
-EDA
-      ↓
-Feature Engineering
-      ↓
-Feast Feature Store
-      ↓
-Model Training
-      ↓
-Model Evaluation
-      ↓
-Best Model Selection
-      ↓
-CI/CD Pipeline
-      ↓
-Streamlit Dashboard
-      ↓
-72-Hour AQI Forecast
+```
+Data Collection → Cleaning → EDA → Feature Engineering → Feast Feature Store
+   → Model Training → Model Evaluation → Best Model Selection
+   → CI/CD → Streamlit Dashboard → 72-Hour Forecast
 ```
 
 ---
 
-## 3. Data Collection
+## The data
 
-The project collects historical **air-quality and weather data for Karachi from  **[Open-Meteo.com](https://open-meteo.com/).
+All data comes from [Open-Meteo](https://open-meteo.com/), covering **September 2022 to July 2026**.
 
-The data includes information such as:
+**Air quality:** AQI, PM2.5, PM10, CO, NO2, SO2, O3
+**Weather:** temperature, humidity, pressure, wind, and a few other variables
 
-### Air Quality Data
-
-* AQI
-* PM2.5
-* PM10
-* CO
-* NO2
-* SO2
-* O3
-
-### Weather Data
-
-* Temperature
-* Relative humidity
-* Atmospheric pressure
-* Wind-related measurements
-* Other available weather variables
-
-The historical dataset covers data from **September 2022 to July 2026**.
-
-For the live forecasting system, the latest weather and air-quality data is collected through the **Open-Meteo API**.
+For live forecasts, the same data is pulled fresh from the Open-Meteo API.
 
 ---
 
-## 4. Exploratory Data Analysis (EDA)
+## Exploring the data
 
-EDA was performed to understand the dataset before training the models.
-
-The analysis included:
-
-* Checking missing values
-* Checking duplicate records
-* Understanding data types
-* Analyzing AQI distribution
-* Studying AQI over time
-* Finding relationships between AQI and weather variables
-* Checking correlations between features
-* Identifying unusual values and patterns
-* Understanding hourly and daily AQI changes
-
-EDA helped in understanding which variables could be useful for forecasting AQI.
+Before touching any models, I dug into the data to understand what I was working with — missing values, duplicates, data types, how AQI is distributed, how it moves over time, and how it correlates with weather variables. This step shaped a lot of the feature engineering decisions later on.
 
 ---
 
-## 5. Data Preprocessing
+## Cleaning and preparing the data
 
-Before model training, the data was prepared by:
-
-* Sorting data by time
-* Handling missing values
-* Removing unnecessary data
-* Converting timestamps correctly
-* Checking data consistency
-* Preparing the data for time-series forecasting
-
-The data was kept in time order because this is a forecasting problem.
+Since this is a time-series forecasting problem, keeping everything in chronological order mattered a lot. The prep work involved sorting by timestamp, handling missing values, cleaning up inconsistent records, and getting timestamps into a usable format.
 
 ---
 
-## 6. Feature Engineering
+## Feature engineering
 
-Feature engineering was an important part of the project.
+This is where most of the real work happened. A few types of features made the biggest difference:
 
-New features were created from historical AQI and weather data to help the models understand recent patterns.
+**Lag features** — AQI from the previous hour, previous few hours, and the previous day, since air quality doesn't change randomly; it trends.
 
-### Main Features
+**Rolling features** — rolling mean and standard deviation, to capture recent behavior rather than just single points in time.
 
-**Lag Features**
+**Weather change features** — how temperature, humidity, and pressure are shifting, since those changes often precede AQI shifts.
 
-Previous AQI values were used, such as:
-
-* Previous hour AQI
-* Previous several hours AQI
-* Previous day AQI
-
-**Rolling Features**
-
-Rolling statistics were created to understand recent AQI behavior:
-
-* Rolling mean
-* Rolling standard deviation
-
-**Weather Change Features**
-
-Changes in weather variables were also calculated, such as:
-
-* Temperature change
-* Humidity change
-* Pressure change
-
-These features help the model understand how recent conditions can affect future AQI.
+Together, these give the model a sense of *momentum* — not just where AQI is right now, but where it's heading.
 
 ---
 
-## 7. Forecasting Target
+## What's being forecasted
 
-The system is designed to forecast AQI for the next **72 hours**.
-
-```text
-Day 1 → 24 hourly AQI predictions
-Day 2 → 24 hourly AQI predictions
-Day 3 → 24 hourly AQI predictions
-
+```
+Day 1 → 24 hourly predictions
+Day 2 → 24 hourly predictions
+Day 3 → 24 hourly predictions
 Total → 72 hourly predictions
 ```
 
-The model predicts future AQI based on the latest available features and historical patterns.
+---
+
+## Models tried
+
+I tested a range of models rather than betting on one from the start:
+
+Ridge Regression, Naive Persistence, Seasonal Persistence, Random Forest, Extra Trees, Gradient Boosting, HistGradientBoosting, LightGBM, XGBoost, CatBoost, and an LSTM.
+
+Each was evaluated using MAE, RMSE, and R².
+
+**LightGBM came out on top** and was selected as the main forecasting model. The other trained models were kept around for comparison rather than thrown away.
 
 ---
 
-## 8. Machine Learning Models
+## Why Feast for the Feature Store
 
-Multiple Machine Learning models were tested and compared.
+I wanted to keep feature generation and model prediction as separate concerns instead of recomputing everything inline every time — that's exactly what a feature store is for. Feast handles:
 
-The project included:
+- Storing and versioning features
+- Managing feature definitions
+- Serving the latest features at prediction time
+- Keeping training and serving features consistent
 
-* Ridge Regression
-* Naive Persistence
-* Seasonal Persistence
-* Random Forest
-* Extra Trees
-* Gradient Boosting
-* HistGradientBoosting
-* LightGBM
-* XGBoost
-* CatBoost
-* LSTM
-
-Different models were evaluated using forecasting metrics such as:
-
-* MAE
-* RMSE
-* R² Score
-
----
-
-## 9. Model Selection
-
-After comparing the models, **LightGBM** performed best for the main forecasting task.
-
-The selected model achieved approximately:
-
-The final model was selected based on its overall forecasting performance.
-
-Other trained models were also kept for comparison and evaluation.
-
----
-
-## 10. Why Feast Feature Store?
-
-**Feast** was used as the Feature Store for the project.
-
-The main reason for using Feast was to separate **feature generation** from **model prediction**.
-
-It provides a proper way to:
-
-* Store features
-* Manage feature definitions
-* Retrieve features for prediction
-* Keep training and serving features consistent
-* Support an ML production workflow
-
-The project uses Feast for retrieving the latest features before making the 72-hour forecast.
-
-### Feast Setup
-
-The project uses:
-
-```text
+**Setup:**
+```
 Offline Store → DuckDB
 Online Store  → SQLite
 Registry      → Local Registry
 ```
+DuckDB made sense for the offline store since the dataset was small enough to process locally without needing a cloud warehouse.
 
-DuckDB was used for the offline feature data because the dataset could be processed efficiently without using a cloud service.
+### Why not Hopsworks?
 
----
-
-## 11. Why Feast Instead of Hopsworks?
-
-Hopsworks was initially considered for the Feature Store.
-
-However, the project faced practical issues with the Hopsworks setup and cloud dependency.
-
-For this internship project, **Feast was selected because it could run locally and integrate more easily with the existing project**.
-
-This made the system:
-
-* Easier to develop
-* Easier to test
-* Less dependent on external cloud services
-* Suitable for the internship environment
+Hopsworks was the original plan, but its cloud dependency caused enough friction during setup that it slowed the project down. Feast, running entirely locally, was a much better fit for an internship-scale project — easier to develop against, easier to test, and with no external service to worry about.
 
 ---
 
-## 12. Model Training Pipeline
+## Training pipeline
 
-The training pipeline automatically:
-
-1. Loads the prepared data
-2. Performs feature engineering
-3. Prepares training data
-4. Trains the models
-5. Evaluates the models
-6. Selects/saves the trained models
-7. Updates the required project files
-
-The trained models are stored and used by the forecasting dashboard.
+The training pipeline handles the full loop automatically: load prepared data → engineer features → train models → evaluate them → save the best one → update project files. The dashboard then reads directly from whatever the pipeline produces.
 
 ---
 
-## 13. CI/CD Pipeline
+## CI/CD
 
-GitHub Actions was used to automate important project tasks.
+GitHub Actions runs the project on autopilot through three workflows:
 
-The project contains automated workflows for:
+- **Feature pipeline** — pulls new data and refreshes the feature store on a schedule
+- **Training pipeline** — retrains and re-evaluates models regularly
+- **CI validation** — checks that the project setup is actually working
 
-### Feature Pipeline
-
-Runs regularly to:
-
-* Collect/update data
-* Generate new features
-* Update the Feature Store data
-
-### Training Pipeline
-
-Runs regularly to:
-
-* Train the forecasting models
-* Evaluate the models
-* Update the trained model
-
-### CI Validation
-
-The CI workflow checks whether the project setup and required components are working correctly.
-
-### CI/CD Flow
-
-```text
-New Data
-   ↓
-Feature Pipeline
-   ↓
-Feature Store
-   ↓
-Training Pipeline
-   ↓
-New Model
-   ↓
-Dashboard
+```
+New Data → Feature Pipeline → Feature Store → Training Pipeline → New Model → Dashboard
 ```
 
-This reduces manual work and makes the project closer to a production ML system.
+This keeps the whole system self-updating instead of needing manual reruns every time new data comes in.
 
 ---
 
-## 14. Dashboard
+## Dashboard
 
-A **Streamlit dashboard** was developed to present the forecasting results in an easy-to-understand way.
+A Streamlit app ties everything together — current AQI, the full 72-hour forecast, hour-by-hour breakdowns, and trend visualizations — so anyone can check the forecast without touching the code.
 
-The dashboard connects the complete ML pipeline:
-
-```text
-Latest Data
-     ↓
-Feature Engineering
-     ↓
-Feast Feature Store
-     ↓
-Trained Model
-     ↓
-72-Hour Forecast
-     ↓
-Dashboard
+```
+Latest Data → Feature Engineering → Feast → Trained Model → 72-Hour Forecast → Dashboard
 ```
 
-### Dashboard Shows
+---
 
-* Current AQI information
-* Forecasted AQI
-* Hour-by-hour predictions
-* 3-day forecast
-* Forecast trends
-* Latest available information
-* Model-generated results
+## Tech stack
 
-The dashboard provides a simple interface for viewing the predicted air quality without running the ML code manually.
+| Category | Tools |
+|---|---|
+| Language | Python |
+| Data & ML | Pandas, NumPy, Scikit-learn, LightGBM, XGBoost, CatBoost, TensorFlow/Keras |
+| Feature Store | Feast, DuckDB, SQLite |
+| Data Source | Open-Meteo API |
+| Dashboard | Streamlit |
+| Automation | GitHub Actions, CI/CD |
+| Version Control | Git, GitHub, Git LFS |
 
 ---
 
-## 15. Technology Stack
+## Project structure
 
-### Programming
-
-* Python
-
-### Data & ML
-
-* Pandas
-* NumPy
-* Scikit-learn
-* LightGBM
-* XGBoost
-* CatBoost
-* TensorFlow/Keras
-
-### Feature Store
-
-* Feast
-* DuckDB
-* SQLite
-
-### Data Source
-
-* Open-Meteo API
-
-### Dashboard
-
-* Streamlit
-
-### Automation
-
-* GitHub Actions
-* CI/CD
-
-### Version Control
-
-* Git
-* GitHub
-* Git LFS
-
----
-
-## 16. Project Structure
-
-```text
+```
 Karachi-Air-Intelligence/
 │
 ├── dashboard/
@@ -438,34 +201,25 @@ Karachi-Air-Intelligence/
 
 ---
 
-## 17. Key Project Results
+## Results
 
-The project successfully provides:
-
-* **3-day AQI forecasting**
-* **72 hourly predictions**
-* Automated feature generation
-* Feature Store integration
-* Machine Learning model training
-* Model evaluation and selection
-* Automated CI/CD pipelines
-* Interactive forecasting dashboard
+- 3-day, 72-hour AQI forecasts, hour by hour
+- Fully automated feature generation via a real feature store
+- Multiple models trained, compared, and evaluated fairly
+- Self-updating pipelines through CI/CD
+- A live, interactive dashboard anyone can use
 
 ---
 
-## 18. Project Link
+## Live app
 
-Streamlit App Link:
-
+Streamlit link: 
+https://karachi-aqi-prediction-app.streamlit.app
 
 ---
 
-## 19. Conclusion
+## Summary
 
-Karachi Air Intelligence is an end-to-end Machine Learning project for **72-hour AQI forecasting in Karachi**.
+Karachi Air Intelligence is an end-to-end ML project built around one goal: making Karachi's air quality forecast genuinely useful, three days out, updated automatically, and easy to check at a glance.
 
-The project combines:
-
-**Data Collection → EDA → Feature Engineering → Feast → Machine Learning → Model Evaluation → CI/CD → Dashboard**
-
-The system demonstrates how an ML forecasting model can be developed and connected to an automated pipeline and user-friendly dashboard.
+**Pipeline:** Data Collection → EDA → Feature Engineering → Feast → Machine Learning → Model Evaluation → CI/CD → Dashboard
