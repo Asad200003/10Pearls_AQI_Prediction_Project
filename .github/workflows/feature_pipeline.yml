@@ -24,16 +24,7 @@ name: Hourly Feature Pipeline
 # ============================================================================
 
 "on":
-  schedule:
-    # Every hour, on the hour, UTC. GitHub Actions cron is ALWAYS UTC - there is no
-    # timezone field. Karachi (Asia/Karachi) is UTC+5 year-round (Pakistan does not
-    # observe daylight saving time), so "0 * * * *" fires at :00 UTC == :00+5 PKT,
-    # e.g. 09:00 UTC == 14:00 PKT. Since this runs every hour anyway, the UTC/PKT
-    # offset only matters for reading the run timestamps in the Actions log / in
-    # feature_store/data/last_feature_pipeline_run.json - add 5 hours to convert
-    # UTC -> PKT.
-    - cron: "0 * * * *"
-  workflow_dispatch: {}   # manual "Run workflow" button in the GitHub Actions UI
+  workflow_dispatch: {}   # Manual "Run workflow" button only (Cron disabled)
 
 permissions:
   contents: write   # required so the final step can commit the refreshed Feast files back
@@ -46,8 +37,8 @@ jobs:
   run-feature-pipeline:
     runs-on: ubuntu-latest
     timeout-minutes: 20   # this pipeline only fetches ~10 days of recent data + one Feast
-                           # materialize-incremental call - should finish in well under a minute
-                           # normally; 20 minutes is a generous ceiling for a slow Open-Meteo response.
+                          # materialize-incremental call - should finish in well under a minute
+                          # normally; 20 minutes is a generous ceiling for a slow Open-Meteo response.
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
