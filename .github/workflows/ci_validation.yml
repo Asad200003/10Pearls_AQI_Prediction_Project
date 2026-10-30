@@ -1,6 +1,6 @@
 name: CI Validation
 
-# Runs on every push and pull request - separate from the scheduled feature/training
+# Runs only on manual trigger - separate from the feature/training
 # pipelines (.github/workflows/feature_pipeline.yml / training_pipeline.yml). This
 # workflow does NOT touch the real feature_store/ or models/ - it's a self-contained
 # smoke test (scripts/verify_setup.py) that proves the project's code, notebook, and
@@ -9,11 +9,7 @@ name: CI Validation
 # network access and does not commit anything back to the repository.
 
 "on":
-  push:
-    branches: ["**"]
-  pull_request:
-    branches: ["**"]
-  workflow_dispatch: {}
+  workflow_dispatch: {}   # Manual "Run workflow" button only
 
 permissions:
   contents: read
