@@ -10,14 +10,7 @@ name: Daily Training Pipeline
 # ============================================================================
 
 "on":
-  schedule:
-    # Once a day at 02:00 UTC. GitHub Actions cron is always UTC. Karachi
-    # (Asia/Karachi) is UTC+5 year-round (no daylight saving in Pakistan), so
-    # 02:00 UTC == 07:00 PKT - early morning in Karachi, after a full day+night of
-    # hourly feature-pipeline runs have accumulated fresh data to train on, and
-    # before most people would be using the dashboard.
-    - cron: "0 2 * * *"
-  workflow_dispatch: {}   # manual "Run workflow" button in the GitHub Actions UI
+  workflow_dispatch: {}   # Manual "Run workflow" button only (Daily schedule disabled)
 
 permissions:
   contents: write   # required so the final step can commit the retrained model back
